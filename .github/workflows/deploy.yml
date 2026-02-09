@@ -2,7 +2,7 @@ name: Deploy to Xserver
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -23,10 +23,10 @@ jobs:
         run: |
           set -e
           ssh -i ~/.ssh/id_ed25519 -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" <<'EOF'
-            set -e
-            cd /home/xs20010119/ai-craft-package.com/reskilling-platform
-            git pull origin main
-            composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
-            php artisan migrate --force
-            php artisan optimize:clear
+          set -e
+          cd /home/xs20010119/ai-craft-package.com/reskilling-platform
+          git pull origin main
+          composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
+          php artisan migrate --force
+          php artisan optimize:clear
           EOF
