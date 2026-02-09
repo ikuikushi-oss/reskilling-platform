@@ -1,0 +1,1 @@
+<img src="{{ asset('logo.png') }}?v={{ time() }}" alt="AI Craft Reskilling" {{ $attributes->merge(['class' => '']) }}>
