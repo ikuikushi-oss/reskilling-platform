@@ -15,17 +15,24 @@ jobs:
         run: |
           set -e
           mkdir -p ~/.ssh
-          cat > ~/.ssh/id_ed25519 <<'KEY'
+
+          # Write private key safely (no printf)
+          cat > ~/.ssh/github_actions_xserver <<'KEY'
           ${{ secrets.SSH_PRIVATE_KEY }}
           KEY
-          chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts
+
+          chmod 600 ~/.ssh/github_actions_xserver
 
       - name: Deploy (git pull + Laravel)
         shell: bash
         run: |
           set -e
-          ssh -i ~/.ssh/id_ed25519 -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" <<'EOF'
+
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            -i ~/.ssh/github_actions_xserver \
+            -p "${{ secrets.SSH_PORT }}" \
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" <<'EOF'
+
           set -e
           cd /home/xs20010119/ai-craft-package.com/reskilling-platform
           git pull origin main
