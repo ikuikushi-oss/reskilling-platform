@@ -15,17 +15,26 @@ jobs:
         run: |
           set -e
           mkdir -p ~/.ssh
-          cat > ~/.ssh/github_actions_xserver <<KEY
+          cat > ~/.ssh/github_actions_xserver << 'KEY'
           ${{ secrets.SSH_PRIVATE_KEY }}
           KEY
           chmod 600 ~/.ssh/github_actions_xserver
+
+      # ★ 追加：Actionsが使っている鍵の指紋を出力（公開鍵のみ）
+      - name: Debug key fingerprint (public only)
+        shell: bash
+        run: |
+          set -e
+          ssh-keygen -y -f ~/.ssh/github_actions_xserver | ssh-keygen -lf -
 
       - name: SSH test
         shell: bash
         run: |
           set -e
-          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            -i ~/.ssh/github_actions_xserver \
-            -p "${{ secrets.SSH_PORT }}" \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            'whoami; hostname; pwd; echo OK'
+          ssh -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
+              -i ~/.ssh/github_actions_xserver \
+              -p "${{ secrets.SSH_PORT }}" \
+              "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+              'whoami; hostname; pwd; echo OK'
