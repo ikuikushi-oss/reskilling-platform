@@ -15,28 +15,17 @@ jobs:
         run: |
           set -e
           mkdir -p ~/.ssh
-
-          # Write private key safely (no printf)
-          cat > ~/.ssh/github_actions_xserver <<'KEY'
+          cat > ~/.ssh/github_actions_xserver <<KEY
           ${{ secrets.SSH_PRIVATE_KEY }}
           KEY
-
           chmod 600 ~/.ssh/github_actions_xserver
 
-      - name: Deploy (git pull + Laravel)
+      - name: SSH test
         shell: bash
         run: |
           set -e
-
           ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             -i ~/.ssh/github_actions_xserver \
             -p "${{ secrets.SSH_PORT }}" \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" <<'EOF'
-
-          set -e
-          cd /home/xs20010119/ai-craft-package.com/reskilling-platform
-          git pull origin main
-          composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
-          php artisan migrate --force
-          php artisan optimize:clear
-          EOF
+            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
+            'whoami; hostname; pwd; echo OK'
