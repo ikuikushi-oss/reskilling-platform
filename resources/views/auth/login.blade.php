@@ -46,39 +46,5 @@
             </x-primary-button>
         </div>
     </form>
-    <div class="mt-6 border-t pt-4">
-        <p class="text-xs text-gray-500 mb-2 text-center">Development Login Helpers (Remove in Prod)</p>
-        <div class="grid grid-cols-1 gap-2">
-            <button type="button" onclick="fillLogin('admin@example.com', 'password')"
-                style="background-color: #1e293b; color: white;"
-                class="w-full px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-sm font-medium rounded-md transition transform hover:scale-[1.02]">
-                管理者 (Admin)
-            </button>
-            <div class="grid grid-cols-3 gap-2">
-                <button type="button" onclick="fillLogin('teacher1@example.com', 'password')"
-                    class="w-full px-2 py-2 bg-blue-100 hover:bg-blue-200 text-blue-800 text-xs font-semibold rounded-md transition border border-blue-200">
-                    講師:山田(Web)
-                </button>
-                <button type="button" onclick="fillLogin('teacher2@example.com', 'password')"
-                    class="w-full px-2 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-800 text-xs font-semibold rounded-md transition border border-indigo-200">
-                    講師:鈴木(AI)
-                </button>
-                <button type="button" onclick="fillLogin('teacher3@example.com', 'password')"
-                    class="w-full px-2 py-2 bg-teal-100 hover:bg-teal-200 text-teal-800 text-xs font-semibold rounded-md transition border border-teal-200">
-                    講師:田中(DX)
-                </button>
-            </div>
-            <button type="button" onclick="fillLogin('student_1_1@example.com', 'password')"
-                class="w-full px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-medium rounded-md transition">
-                生徒 (Student 1)
-            </button>
-        </div>
-    </div>
 
-    <script>
-        function fillLogin(email, password) {
-            document.getElementById('email').value = email;
-            document.getElementById('password').value = password;
-        }
-    </script>
 </x-guest-layout>
